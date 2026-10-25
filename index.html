@@ -445,10 +445,12 @@ function renderAchv(W){
   h+='</tbody></table></div>';$('achv').innerHTML=h;
 }
 function renderTotals(W){
-  const tot={};W.forEach(d=>d.b.forEach(b=>{tot[b.c]=(tot[b.c]||0)+dur(b);}));
-  const order=['study','gym','jt','free','work','life','sleep'].filter(k=>plan.cats[k]);const max=Math.max(1,...order.map(k=>tot[k]||0));
+  const tot={};let nap=0;W.forEach(d=>d.b.forEach(b=>{tot[b.c]=(tot[b.c]||0)+dur(b);if(b.c==='sleep'&&b.t.includes('昼寝'))nap+=dur(b);}));
   const awake=Object.entries(tot).reduce((a,[k,v])=>k==='sleep'?a:a+v,0);
-  $('totals').innerHTML=`<div class="awake"><span class="lab">この週の稼働時間</span><strong class="num">${fmtH(awake)}</strong><span class="sub">1日平均 ${fmtH(awake/7)}・睡眠と昼寝以外の予定の合計</span></div>`+order.map(k=>`<div class="row ${k}"><span class="lab">${esc(plan.cats[k])}</span><div class="bar"><div style="width:${((tot[k]||0)/max*100).toFixed(1)}%"></div></div><span class="v num">${fmtH(tot[k]||0)}</span></div>`).join('');
+  tot.sleep=nap; // the sleep row shows naps only
+  const order=['study','gym','jt','free','work','life','sleep'].filter(k=>plan.cats[k]);const max=Math.max(1,...order.map(k=>tot[k]||0));
+  const label=k=>k==='sleep'?'昼寝':plan.cats[k];
+  $('totals').innerHTML=`<div class="awake"><span class="lab">この週の稼働時間</span><strong class="num">${fmtH(awake)}</strong><span class="sub">1日平均 ${fmtH(awake/7)}・睡眠と昼寝以外の予定の合計</span></div>`+order.map(k=>`<div class="row ${k}"><span class="lab">${esc(label(k))}</span><div class="bar"><div style="width:${((tot[k]||0)/max*100).toFixed(1)}%"></div></div><span class="v num">${fmtH(tot[k]||0)}</span></div>`).join('');
 }
 function renderFlow(W){
   if(flowDay==null)flowDay=cur===thisMon?(today.getDay()+6)%7:0;
