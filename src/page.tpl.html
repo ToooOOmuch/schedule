@@ -205,10 +205,6 @@ kbd{font-family:var(--f-num);font-size:11px;border:1px solid var(--line-strong);
 .gcard .gnote{font-size:13px;color:var(--muted);margin:0}
 .warn{color:var(--danger)}
 
-.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-.tip{border-top:2px solid var(--line-strong);padding-top:10px}
-.tip h3{font-size:15px;margin:0 0 4px}
-.tip p{margin:0;font-size:14px;color:var(--muted)}
 
 /* dock */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line-strong);box-shadow:0 -6px 20px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -317,7 +313,6 @@ app.innerHTML=`<div class="wrap">
   <section><h2>目標と達成予定日</h2>
     <p class="howto"><span>表示中の週の予定時間を毎週続けた場合の目安です。チェックした実績は「これまでの実績」として差し引かれます。<b>必要な量の数字</b>も書き換えられます。</span></p>
     <div class="panel gchart" id="gchart"></div><div class="gcards" id="gcards"></div></section>
-  <section><h2>続けるためのルール</h2><div class="tips" id="tips"></div></section>
 </div>
 <div class="dock">
 <div class="selbar" id="selbar" hidden><div class="in"><span class="msg" id="sl-msg"></span><div class="tools">
@@ -350,7 +345,6 @@ function render(){
   ['sec-achv','sec-flow','sec-tot'].forEach(id=>$(id).hidden=!W);
   if(W){renderGrid(W);renderAchv(W);renderTotals(W);renderFlow(W);}
   renderGoals();
-  $('tips').innerHTML=plan.tips.map(t=>`<div class="tip"><h3>${esc(t.h)}</h3><p>${esc(t.p)}</p></div>`).join('');
   $('savebar').hidden=!dirty;$('sb-undo').disabled=!undoStack.length;
   applySel();
 }
