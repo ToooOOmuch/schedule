@@ -261,11 +261,12 @@ kbd{font-family:var(--f-num);font-size:11px;border:1px solid var(--line-strong);
   .mtabs button[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
   .mtabs button[aria-pressed="true"] small{color:var(--bg)}
   .scroller{overflow:visible}
-  .tt.one{min-width:0;grid-template-columns:44px 1fr;grid-template-rows:8px repeat(70,15px);touch-action:pan-y}
-  .tt.one .tl{padding-right:6px}
-  .tt.one .blk{font-size:13px;margin:1px 6px 1px 4px;padding:2px 8px}
-  .tt.one .blk em{font-size:11px}
-  .tt.one .blk.tiny b{font-size:11px}
+  .tt.one{min-width:0;grid-template-columns:44px 1fr;grid-template-rows:8px repeat(70,10.5px);touch-action:pan-y}
+  .tt.one .tl{padding-right:6px;font-size:10px;transform:translateY(-6px)}
+  .tt.one .blk{font-size:12px;line-height:1.2;margin:1px 6px 0 4px;padding:1px 8px;display:flex;align-items:baseline;gap:8px}
+  .tt.one .blk b{flex:0 1 auto;min-width:0}
+  .tt.one .blk em{font-size:10px;flex:0 0 auto}
+  .tt.one .blk.tiny b{font-size:10px;line-height:1}
   .tt.one .blk.sel{touch-action:none}
   .weektools .btn{padding:8px 12px}
   .dock{box-shadow:0 -8px 24px rgba(0,0,0,.12)}
