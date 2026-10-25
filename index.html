@@ -239,11 +239,62 @@ kbd{font-family:var(--f-num);font-size:11px;border:1px solid var(--line-strong);
 .actions .sp{flex:1}
 @media (max-width:480px){.gl,.arow{grid-template-columns:88px 1fr}.row{grid-template-columns:96px 1fr 56px}.flow li{grid-template-columns:76px 1fr;}.flow li .rate{grid-column:2}.wnav strong{min-width:0;font-size:15px}}
 @media (prefers-reduced-motion:no-preference){.blk{transition:filter .15s}}
+.mtabs{display:none}
+@media (max-width:640px){
+  body{font-size:14px}
+  .wrap{gap:28px;padding-block:18px 170px}
+  h1{font-size:22px}
+  h2{font-size:17px;margin-bottom:10px}
+  .legend{gap:4px 12px;margin-top:10px}
+  .legend span{font-size:12px}
+  .weekbar{gap:8px;margin-bottom:10px}
+  .wnav{width:100%;justify-content:space-between}
+  .wnav .btn{padding:8px 16px}
+  .wnav strong{font-size:14px;min-width:0}
+  .wjump{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}
+  .wjump button{padding:6px 4px}
+  .mtabs{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px}
+  .mtabs button{border:1px solid var(--line-strong);background:var(--surface);border-radius:10px;padding:6px 0;display:flex;flex-direction:column;align-items:center;font-weight:700;font-size:13px;line-height:1.25;cursor:pointer;color:var(--fg)}
+  .mtabs button.we{color:var(--c-jt)}
+  .mtabs button small{font-family:var(--f-num);font-size:12px;font-weight:500;color:var(--muted)}
+  .mtabs button.today small{color:var(--accent);font-weight:700}
+  .mtabs button[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+  .mtabs button[aria-pressed="true"] small{color:var(--bg)}
+  .scroller{overflow:visible}
+  .tt.one{min-width:0;grid-template-columns:44px 1fr;grid-template-rows:8px repeat(70,15px);touch-action:pan-y}
+  .tt.one .tl{padding-right:6px}
+  .tt.one .blk{font-size:13px;margin:1px 6px 1px 4px;padding:2px 8px}
+  .tt.one .blk em{font-size:11px}
+  .tt.one .blk.tiny b{font-size:11px}
+  .tt.one .blk.sel{touch-action:none}
+  .weektools .btn{padding:8px 12px}
+  .dock{box-shadow:0 -8px 24px rgba(0,0,0,.12)}
+  .selbar .in{flex-direction:column;align-items:stretch;gap:8px}
+  .selbar .msg{font-size:13px;flex:none}
+  .selbar .tools{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+  .selbar .btn{flex:0 0 auto;padding:9px 14px}
+  .selbar .rate{flex:0 0 auto}
+  .savebar .in{gap:6px}
+  .savebar .msg{flex:1 1 100%;font-size:13px}
+  .savebar .btn{flex:1;padding:9px 6px}
+  .sheet{align-items:flex-end;padding:0}
+  .card{width:100%;border-radius:16px 16px 0 0;max-height:92%;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+  .card input,.card select,.card textarea{font-size:16px}
+  .actions .btn{flex:1;padding:10px 8px}
+  .actions .sp{display:none}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .tabs button{flex:0 0 auto;padding:6px 12px}
+  .panel{padding:14px}
+  .flow li{gap:4px 10px;padding-block:4px;border-bottom:1px solid var(--line)}
+  .flow li:last-child{border-bottom:0}
+  .gcard{padding:14px}
+  .gdate strong{font-size:19px}
+}
 </style>
 
 <div id="app"></div>
 
-<script type="application/json" id="plan-data">{"title":"週間スケジュール","lead":"10/26からの予定です。CCNA合格を最優先にして、ジムは週3回、雀魂は空いた時間で楽しみます。予定ごとの達成度をチェックすると、その週にどれだけできたかと、目標の達成予定日が自動で更新されます。","cats":{"study":"CCNA","gym":"ジム","jt":"雀魂・YouTube","work":"仕事・移動","life":"食事・家事・身支度","free":"自由時間","sleep":"睡眠・昼寝"},"track":["study","gym","jt"],"start":"2026-10-26","template":[{"d":"月","e":"MON","b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:30","c":"gym","t":"ジム（上半身）"},{"s":"19:30","e":"20:00","c":"life","t":"入浴"},{"s":"20:00","e":"20:30","c":"life","t":"夕食"},{"s":"20:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"火","e":"TUE","b":[{"s":"5:30","e":"6:30","c":"sleep","t":"睡眠"},{"s":"6:30","e":"6:45","c":"life","t":"起床・水・洗顔"},{"s":"6:45","e":"9:00","c":"study","t":"CCNA"},{"s":"9:00","e":"18:00","c":"work","t":"仕事・帰宅"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"22:00","c":"jt","t":"雀魂"},{"s":"22:00","e":"23:00","c":"study","t":"CCNA"}]},{"d":"水","e":"WED","b":[{"s":"5:30","e":"6:30","c":"sleep","t":"睡眠"},{"s":"6:30","e":"6:45","c":"life","t":"起床・水・洗顔"},{"s":"6:45","e":"9:00","c":"study","t":"CCNA"},{"s":"9:00","e":"18:00","c":"work","t":"リモート出社"},{"s":"18:00","e":"19:00","c":"gym","t":"ジム（下半身）"},{"s":"19:00","e":"19:30","c":"life","t":"入浴"},{"s":"19:30","e":"20:00","c":"life","t":"夕食"},{"s":"20:00","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"木","e":"THU","b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"入浴"},{"s":"19:00","e":"19:30","c":"life","t":"夕食"},{"s":"19:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"金","e":"FRI","b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"入浴"},{"s":"19:00","e":"19:30","c":"life","t":"夕食"},{"s":"19:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"土","e":"SAT","we":1,"b":[{"s":"5:30","e":"7:00","c":"sleep","t":"睡眠"},{"s":"7:00","e":"7:30","c":"life","t":"起床"},{"s":"7:30","e":"10:30","c":"study","t":"CCNA 演習"},{"s":"10:30","e":"11:00","c":"life","t":"昼食"},{"s":"11:00","e":"12:00","c":"gym","t":"ジム（全身）"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"18:00","c":"jt","t":"雀魂"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"21:00","c":"jt","t":"雀魂"},{"s":"21:00","e":"22:30","c":"study","t":"CCNA 演習"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"日","e":"SUN","we":1,"b":[{"s":"5:30","e":"7:00","c":"sleep","t":"睡眠"},{"s":"7:00","e":"7:30","c":"life","t":"起床"},{"s":"7:30","e":"10:30","c":"study","t":"CCNA 模試・苦手分野"},{"s":"10:30","e":"11:00","c":"life","t":"昼食"},{"s":"11:00","e":"12:00","c":"gym","t":"ランニング"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"18:00","c":"jt","t":"雀魂"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"21:30","c":"study","t":"CCNA 演習"},{"s":"21:30","e":"22:30","c":"free","t":"自由・来週の予定"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備"}]}],"weeks":{"2026-10-26":[{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:30","c":"gym","t":"ジム（上半身）"},{"s":"19:30","e":"20:00","c":"life","t":"入浴"},{"s":"20:00","e":"20:30","c":"life","t":"夕食"},{"s":"20:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"6:30","c":"sleep","t":"睡眠"},{"s":"6:30","e":"6:45","c":"life","t":"起床・水・洗顔"},{"s":"6:45","e":"9:00","c":"study","t":"CCNA"},{"s":"9:00","e":"18:00","c":"work","t":"リモート出社"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"22:00","c":"jt","t":"雀魂"},{"s":"22:00","e":"23:00","c":"study","t":"CCNA"}]},{"b":[{"s":"5:30","e":"6:30","c":"sleep","t":"睡眠"},{"s":"6:30","e":"6:45","c":"life","t":"起床・水・洗顔"},{"s":"6:45","e":"9:00","c":"study","t":"CCNA"},{"s":"9:00","e":"18:45","c":"work","t":"リモート出社"},{"s":"18:45","e":"19:00","c":"gym","t":"ジム（下半身）"},{"s":"19:00","e":"19:30","c":"life","t":"入浴"},{"s":"19:30","e":"20:00","c":"life","t":"夕食"},{"s":"20:00","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"入浴"},{"s":"19:00","e":"19:30","c":"life","t":"夕食"},{"s":"19:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"入浴"},{"s":"19:00","e":"19:30","c":"life","t":"夕食"},{"s":"19:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"7:00","c":"sleep","t":"睡眠"},{"s":"7:00","e":"7:30","c":"life","t":"起床"},{"s":"7:30","e":"10:30","c":"study","t":"CCNA 演習"},{"s":"10:30","e":"11:00","c":"life","t":"昼食"},{"s":"11:00","e":"12:00","c":"gym","t":"ジム（全身）"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"18:00","c":"jt","t":"雀魂"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"21:00","c":"jt","t":"雀魂"},{"s":"21:00","e":"22:30","c":"study","t":"CCNA 演習"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"7:00","c":"sleep","t":"睡眠"},{"s":"7:00","e":"7:30","c":"life","t":"起床"},{"s":"7:30","e":"10:30","c":"study","t":"CCNA 模試・苦手分野"},{"s":"10:30","e":"11:00","c":"life","t":"昼食"},{"s":"11:00","e":"12:00","c":"gym","t":"ランニング"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"18:00","c":"jt","t":"雀魂"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"21:30","c":"study","t":"CCNA 演習"},{"s":"21:30","e":"22:30","c":"free","t":"自由・来週の予定"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備"}]}],"2026-11-02":[{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 新しい分野を読む"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"21:00","c":"gym","t":"ジム（上半身）"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 問題演習"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"20:45","c":"study","t":"CCNA ラボ（Packet Tracer）"},{"s":"20:45","e":"21:00","c":"free","t":"休憩"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 新しい分野を読む"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"21:00","c":"free","t":"休養日（自由）"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"jt","t":"雀魂 1半荘"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 問題演習"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"21:00","c":"gym","t":"ジム（下半身）"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 今週の復習"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"21:00","c":"jt","t":"雀魂（録画）"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"jt","t":"雀魂・配信もOK"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"6:00","c":"sleep","t":"睡眠"},{"s":"6:00","e":"6:15","c":"life","t":"起床"},{"s":"6:15","e":"8:15","c":"study","t":"CCNA 演習"},{"s":"8:15","e":"9:00","c":"life","t":"朝食"},{"s":"9:00","e":"10:30","c":"gym","t":"ジム（全身）"},{"s":"10:30","e":"12:00","c":"life","t":"家事・買い物"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"14:30","c":"study","t":"CCNA 間違い直し"},{"s":"14:30","e":"18:00","c":"jt","t":"雀魂（録画）・自由"},{"s":"18:00","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備"}]},{"b":[{"s":"5:30","e":"6:00","c":"sleep","t":"睡眠"},{"s":"6:00","e":"6:15","c":"life","t":"起床"},{"s":"6:15","e":"8:15","c":"study","t":"CCNA 模試・苦手分野"},{"s":"8:15","e":"9:00","c":"life","t":"朝食"},{"s":"9:00","e":"12:00","c":"free","t":"自由（外出など）"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"14:00","c":"jt","t":"ショート編集・投稿"},{"s":"14:00","e":"18:00","c":"free","t":"自由"},{"s":"18:00","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"19:30","c":"life","t":"振り返り・来週の確認"},{"s":"19:30","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備"}]}]},"goals":[{"n":"CCNA合格","cat":"study","min":140,"max":150,"note":"ITの経験が少しあれば短め、まったくのゼロからなら200時間寄りです。"},{"n":"魂天Lv1→Lv3","cat":"jt","kw":"雀魂","min":500,"max":600,"note":"約300〜600半荘です。運の影響が大きく、一番読めない目標です。"},{"n":"かっこいい体","cat":"gym","min":400,"max":410,"note":"見た目の変化は3〜6か月ごろから。食事の管理しだいで期間が大きく変わります。"}]}</script>
+<script type="application/json" id="plan-data">{"title":"週間スケジュール","cats":{"study":"CCNA","gym":"ジム","jt":"雀魂・YouTube","work":"仕事・移動","life":"食事・家事・身支度","free":"自由時間","sleep":"睡眠・昼寝"},"track":["study","gym","jt"],"start":"2026-10-26","template":[{"d":"月","e":"MON","b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:30","c":"gym","t":"ジム（上半身）"},{"s":"19:30","e":"20:00","c":"life","t":"入浴"},{"s":"20:00","e":"20:30","c":"life","t":"夕食"},{"s":"20:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"火","e":"TUE","b":[{"s":"5:30","e":"6:30","c":"sleep","t":"睡眠"},{"s":"6:30","e":"6:45","c":"life","t":"起床・水・洗顔"},{"s":"6:45","e":"9:00","c":"study","t":"CCNA"},{"s":"9:00","e":"18:00","c":"work","t":"仕事・帰宅"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"22:00","c":"jt","t":"雀魂"},{"s":"22:00","e":"23:00","c":"study","t":"CCNA"}]},{"d":"水","e":"WED","b":[{"s":"5:30","e":"6:30","c":"sleep","t":"睡眠"},{"s":"6:30","e":"6:45","c":"life","t":"起床・水・洗顔"},{"s":"6:45","e":"9:00","c":"study","t":"CCNA"},{"s":"9:00","e":"18:00","c":"work","t":"リモート出社"},{"s":"18:00","e":"19:00","c":"gym","t":"ジム（下半身）"},{"s":"19:00","e":"19:30","c":"life","t":"入浴"},{"s":"19:30","e":"20:00","c":"life","t":"夕食"},{"s":"20:00","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"木","e":"THU","b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"入浴"},{"s":"19:00","e":"19:30","c":"life","t":"夕食"},{"s":"19:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"金","e":"FRI","b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"入浴"},{"s":"19:00","e":"19:30","c":"life","t":"夕食"},{"s":"19:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"土","e":"SAT","we":1,"b":[{"s":"5:30","e":"7:00","c":"sleep","t":"睡眠"},{"s":"7:00","e":"7:30","c":"life","t":"起床"},{"s":"7:30","e":"10:30","c":"study","t":"CCNA 演習"},{"s":"10:30","e":"11:00","c":"life","t":"昼食"},{"s":"11:00","e":"12:00","c":"gym","t":"ジム（全身）"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"18:00","c":"jt","t":"雀魂"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"21:00","c":"jt","t":"雀魂"},{"s":"21:00","e":"22:30","c":"study","t":"CCNA 演習"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"d":"日","e":"SUN","we":1,"b":[{"s":"5:30","e":"7:00","c":"sleep","t":"睡眠"},{"s":"7:00","e":"7:30","c":"life","t":"起床"},{"s":"7:30","e":"10:30","c":"study","t":"CCNA 模試・苦手分野"},{"s":"10:30","e":"11:00","c":"life","t":"昼食"},{"s":"11:00","e":"12:00","c":"gym","t":"ランニング"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"18:00","c":"jt","t":"雀魂"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"21:30","c":"study","t":"CCNA 演習"},{"s":"21:30","e":"22:30","c":"free","t":"自由・来週の予定"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備"}]}],"weeks":{"2026-10-26":[{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:30","c":"gym","t":"ジム（上半身）"},{"s":"19:30","e":"20:00","c":"life","t":"入浴"},{"s":"20:00","e":"20:30","c":"life","t":"夕食"},{"s":"20:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"6:30","c":"sleep","t":"睡眠"},{"s":"6:30","e":"6:45","c":"life","t":"起床・水・洗顔"},{"s":"6:45","e":"9:00","c":"study","t":"CCNA"},{"s":"9:00","e":"18:00","c":"work","t":"リモート出社"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"22:00","c":"jt","t":"雀魂"},{"s":"22:00","e":"23:00","c":"study","t":"CCNA"}]},{"b":[{"s":"5:30","e":"6:30","c":"sleep","t":"睡眠"},{"s":"6:30","e":"6:45","c":"life","t":"起床・水・洗顔"},{"s":"6:45","e":"9:00","c":"study","t":"CCNA"},{"s":"9:00","e":"18:45","c":"work","t":"リモート出社"},{"s":"18:45","e":"19:00","c":"gym","t":"ジム（下半身）"},{"s":"19:00","e":"19:30","c":"life","t":"入浴"},{"s":"19:30","e":"20:00","c":"life","t":"夕食"},{"s":"20:00","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"入浴"},{"s":"19:00","e":"19:30","c":"life","t":"夕食"},{"s":"19:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:30","c":"study","t":"CCNA"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"入浴"},{"s":"19:00","e":"19:30","c":"life","t":"夕食"},{"s":"19:30","e":"22:30","c":"jt","t":"雀魂"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"7:00","c":"sleep","t":"睡眠"},{"s":"7:00","e":"7:30","c":"life","t":"起床"},{"s":"7:30","e":"10:30","c":"study","t":"CCNA 演習"},{"s":"10:30","e":"11:00","c":"life","t":"昼食"},{"s":"11:00","e":"12:00","c":"gym","t":"ジム（全身）"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"18:00","c":"jt","t":"雀魂"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"21:00","c":"jt","t":"雀魂"},{"s":"21:00","e":"22:30","c":"study","t":"CCNA 演習"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"7:00","c":"sleep","t":"睡眠"},{"s":"7:00","e":"7:30","c":"life","t":"起床"},{"s":"7:30","e":"10:30","c":"study","t":"CCNA 模試・苦手分野"},{"s":"10:30","e":"11:00","c":"life","t":"昼食"},{"s":"11:00","e":"12:00","c":"gym","t":"ランニング"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"18:00","c":"jt","t":"雀魂"},{"s":"18:00","e":"18:30","c":"life","t":"入浴"},{"s":"18:30","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"21:30","c":"study","t":"CCNA 演習"},{"s":"21:30","e":"22:30","c":"free","t":"自由・来週の予定"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備"}]}],"2026-11-02":[{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 新しい分野を読む"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"21:00","c":"gym","t":"ジム（上半身）"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 問題演習"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"20:45","c":"study","t":"CCNA ラボ（Packet Tracer）"},{"s":"20:45","e":"21:00","c":"free","t":"休憩"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 新しい分野を読む"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"21:00","c":"free","t":"休養日（自由）"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"jt","t":"雀魂 1半荘"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 問題演習"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"21:00","c":"gym","t":"ジム（下半身）"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"5:45","c":"life","t":"起床・水・洗顔"},{"s":"5:45","e":"7:15","c":"study","t":"CCNA 今週の復習"},{"s":"7:15","e":"7:30","c":"life","t":"朝食"},{"s":"7:30","e":"9:00","c":"work","t":"準備・移動（単語カード）"},{"s":"9:00","e":"18:30","c":"work","t":"仕事・帰宅"},{"s":"18:30","e":"19:00","c":"life","t":"一息"},{"s":"19:00","e":"19:45","c":"life","t":"夕食"},{"s":"19:45","e":"21:00","c":"jt","t":"雀魂（録画）"},{"s":"21:00","e":"21:45","c":"life","t":"入浴"},{"s":"21:45","e":"22:30","c":"jt","t":"雀魂・配信もOK"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備（スマホを置く）"}]},{"b":[{"s":"5:30","e":"6:00","c":"sleep","t":"睡眠"},{"s":"6:00","e":"6:15","c":"life","t":"起床"},{"s":"6:15","e":"8:15","c":"study","t":"CCNA 演習"},{"s":"8:15","e":"9:00","c":"life","t":"朝食"},{"s":"9:00","e":"10:30","c":"gym","t":"ジム（全身）"},{"s":"10:30","e":"12:00","c":"life","t":"家事・買い物"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"14:30","c":"study","t":"CCNA 間違い直し"},{"s":"14:30","e":"18:00","c":"jt","t":"雀魂（録画）・自由"},{"s":"18:00","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備"}]},{"b":[{"s":"5:30","e":"6:00","c":"sleep","t":"睡眠"},{"s":"6:00","e":"6:15","c":"life","t":"起床"},{"s":"6:15","e":"8:15","c":"study","t":"CCNA 模試・苦手分野"},{"s":"8:15","e":"9:00","c":"life","t":"朝食"},{"s":"9:00","e":"12:00","c":"free","t":"自由（外出など）"},{"s":"12:00","e":"13:00","c":"sleep","t":"昼寝"},{"s":"13:00","e":"14:00","c":"jt","t":"ショート編集・投稿"},{"s":"14:00","e":"18:00","c":"free","t":"自由"},{"s":"18:00","e":"19:00","c":"life","t":"夕食"},{"s":"19:00","e":"19:30","c":"life","t":"振り返り・来週の確認"},{"s":"19:30","e":"22:30","c":"free","t":"自由"},{"s":"22:30","e":"23:00","c":"life","t":"寝る準備"}]}]},"goals":[{"n":"CCNA合格","cat":"study","min":140,"max":150,"note":"ITの経験が少しあれば短め、まったくのゼロからなら200時間寄りです。"},{"n":"魂天Lv1→Lv3","cat":"jt","kw":"雀魂","min":500,"max":600,"note":"約300〜600半荘です。運の影響が大きく、一番読めない目標です。"},{"n":"かっこいい体","cat":"gym","min":400,"max":410,"note":"見た目の変化は3〜6か月ごろから。食事の管理しだいで期間が大きく変わります。"}]}</script>
 
 <script id="app-js">
 (()=>{
@@ -292,16 +343,19 @@ let cur=plan.weeks[thisMon]?thisMon:(weekKeys().find(k=>k>=thisMon)||thisMon);
 const D=()=>plan.weeks[cur]||null;
 const T=i=>plan.template[i];
 const tracked=c=>(plan.track||[]).includes(c);
+const mq=window.matchMedia?window.matchMedia('(max-width:640px)'):null;
+const isMob=()=>!!(mq&&mq.matches);
+const col=i=>isMob()?2:i+2;
 
 const app=document.getElementById('app');
 app.innerHTML=`<div class="wrap">
-  <header><h1 id="h-title"></h1><p class="lead" id="h-lead"></p><div class="legend" id="legend"></div></header>
+  <header><h1 id="h-title"></h1><div class="legend" id="legend"></div></header>
   <section><h2>週間タイムテーブル</h2>
     <div class="weekbar"><div class="wnav"><button class="btn" id="wk-prev" type="button" aria-label="前の週">◀</button><strong id="wk-label"></strong><button class="btn" id="wk-next" type="button" aria-label="次の週">▶</button></div><div class="wjump" id="wjump"></div></div>
     <div class="empty-week" id="wk-empty" hidden><p><strong id="wk-empty-title"></strong>この週の予定はまだありません。作り方を選んでください。</p>
       <div class="acts"><button class="btn primary" id="mk-tpl" type="button">基本の予定から作成</button><button class="btn" id="mk-prev" type="button">前の週をコピーして作成</button></div></div>
     <div id="wk-body">
-      <div class="scroller"><div class="tt" id="tt"></div></div>
+      <div class="mtabs" id="mtabs"></div><div class="scroller" id="scroller"><div class="tt" id="tt"></div></div>
       <div class="weektools"><button class="btn" id="wk-astpl" type="button">この週を基本の予定にする</button><button class="btn danger" id="wk-del" type="button">この週を削除</button></div>
     </div></section>
   <section id="sec-achv"><h2>この週の達成度</h2>
@@ -336,7 +390,7 @@ const $=id=>document.getElementById(id);
 const rateHTML=(day,idx,r,pre)=>{let h='';for(let n=1;n<=5;n++)h+=`<input type="checkbox" class="rc" id="${pre}-${day}-${idx}-${n}" data-day="${day}" data-idx="${idx}" data-n="${n}" ${n<=(r||0)?'checked':''} aria-label="達成度 ${n}/5">`;return h;};
 
 function render(){
-  $('h-title').textContent=plan.title;$('h-lead').textContent=plan.lead;
+  $('h-title').textContent=plan.title;
   $('legend').innerHTML=Object.entries(plan.cats).map(([k,n])=>`<span class="${k}"><i></i>${esc(n)}</span>`).join('');
   renderWeekMenu();
   const W=D();
@@ -357,13 +411,16 @@ function renderWeekMenu(){
     $('mk-prev').hidden=!prevK;$('mk-prev').textContent=prevK?`${md(parseYmd(prevK))}の週をコピーして作成`:'';}
 }
 function renderGrid(W){
-  let h=`<div class="dh" style="grid-column:1"></div>`;
-  W.forEach((d,i)=>{const t=T(i),td=isToday(i);
-    h+=`<div class="dh${t.we?' we':''}${td?' today':''}" style="grid-column:${i+2}">${esc(t.d)}<small>${md(dayDate(i))}${td?' 今日':''}</small></div>`;
-    h+=`<div class="slot${td?' today':''}" data-day="${i}" style="grid-column:${i+2};grid-row:2/${ROWS+2}" title="${esc(t.d)}曜に予定を追加"></div>`;});
+  if(flowDay==null)flowDay=cur===thisMon?(today.getDay()+6)%7:0;
+  const mob=isMob();$('tt').classList.toggle('one',mob);
+  $('mtabs').innerHTML=W.map((d,i)=>`<button type="button" data-flow="${i}" class="${isToday(i)?'today':''}${T(i).we?' we':''}" aria-pressed="${i===flowDay}">${esc(T(i).d)}<small>${dayDate(i).getDate()}</small></button>`).join('');
+  let h=mob?'':`<div class="dh" style="grid-column:1"></div>`;
+  W.forEach((d,i)=>{const t=T(i),td=isToday(i);if(mob&&i!==flowDay)return;
+    if(!mob)h+=`<div class="dh${t.we?' we':''}${td?' today':''}" style="grid-column:${i+2}">${esc(t.d)}<small>${md(dayDate(i))}${td?' 今日':''}</small></div>`;
+    h+=`<div class="slot${td?' today':''}" data-day="${i}" style="grid-column:${col(i)};grid-row:2/${ROWS+2}" title="${esc(t.d)}曜に予定を追加"></div>`;});
   for(let m=Math.ceil(START/60)*60;m<=END;m+=60){const r=(m-START)/STEP+2;h+=`<div class="hr" style="grid-row:${r}/${r+1}"></div><div class="tl" style="grid-row:${r}/${r+1}">${toT(m)}</div>`;}
-  W.forEach((d,i)=>d.b.forEach((b,j)=>{const m=dur(b),extra=b.m?'<i class="mk" aria-hidden="true"></i>':'';
-    h+=`<button type="button" class="blk ${b.c}${m<45?' tiny':''}" data-day="${i}" data-idx="${j}" style="grid-column:${i+2};grid-row:${row(b.s)}/${row(b.e)}" title="${esc(b.s+'–'+b.e+' '+b.t+(b.r?` 達成度${b.r}/5`:'')+(b.m?'\n'+b.m:''))}" aria-label="${esc(T(i).d+'曜 '+b.s+'から'+b.e+' '+b.t)}"><span class="hdl top"></span><b>${m<30?'':esc(b.t)}</b>${m>=45?`<em>${b.s}–${b.e}</em>`:''}${extra}<span class="hdl bot"></span></button>`;}));
+  W.forEach((d,i)=>{if(mob&&i!==flowDay)return;d.b.forEach((b,j)=>{const m=dur(b),extra=b.m?'<i class="mk" aria-hidden="true"></i>':'';
+    h+=`<button type="button" class="blk ${b.c}${m<45?' tiny':''}" data-day="${i}" data-idx="${j}" style="grid-column:${col(i)};grid-row:${row(b.s)}/${row(b.e)}" title="${esc(b.s+'–'+b.e+' '+b.t+(b.r?` 達成度${b.r}/5`:'')+(b.m?'\n'+b.m:''))}" aria-label="${esc(T(i).d+'曜 '+b.s+'から'+b.e+' '+b.t)}"><span class="hdl top"></span><b>${m<30?'':esc(b.t)}</b>${m>=45?`<em>${b.s}–${b.e}</em>`:''}${extra}<span class="hdl bot"></span></button>`;})});
   h+=`<div class="cellsel" id="cellsel" hidden></div>`;
   $('tt').innerHTML=h;
 }
@@ -457,7 +514,7 @@ function openSheet(dayI,idx,startMin){
   $('f-title').textContent=`${md(dayDate(dayI))}（${T(dayI).d}）の予定を${isNew?'追加':'編集'}`;
   $('f-text').value=b.t;$('f-cat').value=b.c;$('f-s').value=b.s;$('f-e').value=b.e;$('f-r').value=b.r||'';$('f-memo').value=b.m||'';
   $('f-days').innerHTML=D().map((_,i)=>`<label><input type="checkbox" id="f-day-${i}" value="${i}" ${i===dayI?'checked':''}>${esc(T(i).d)} ${md(dayDate(i))}</label>`).join('');
-  $('f-del').hidden=isNew;$('f-err').hidden=true;$('sheet').hidden=false;$('f-text').focus();
+  $('f-del').hidden=isNew;$('f-err').hidden=true;$('sheet').hidden=false;if(!isMob())$('f-text').focus();
 }
 function closeSheet(){$('sheet').hidden=true;editing=null;if(lastFocus&&document.contains(lastFocus))lastFocus.focus();}
 function err(t){$('f-err').textContent=t;$('f-err').hidden=false;}
@@ -477,7 +534,7 @@ $('f-cancel').onclick=closeSheet;
 $('sheet').addEventListener('click',e=>{if(e.target===$('sheet'))closeSheet();});
 
 // week menu
-function goWeek(k){cur=k;sel=null;flowDay=null;render();}
+function goWeek(k){cur=k;sel=null;if(!isMob())flowDay=null;render();}
 $('wk-prev').onclick=()=>goWeek(wkShift(cur,-1));
 $('wk-next').onclick=()=>goWeek(wkShift(cur,1));
 $('mk-tpl').onclick=()=>{pushUndo();plan.weeks[cur]=plan.template.map(t=>({b:t.b.map(strip)}));changed();};
@@ -500,7 +557,7 @@ function applySel(){
   if(isB){const el=document.querySelector(`.blk[data-day="${sel.day}"][data-idx="${sel.idx}"]`);if(el)el.classList.add('sel');
     const b=W[sel.day].b[sel.idx];info=`${lab} ${b.s}–${b.e} ${b.t}`;
     $('sl-rate').className='rate '+b.c;$('sl-rate').innerHTML=tracked(b.c)?rateHTML(sel.day,sel.idx,b.r,'sr'):'';$('sl-rate').hidden=!tracked(b.c);}
-  else{const e2=Math.min(END,sel.min+30);if(cs){cs.style.gridColumn=sel.day+2;cs.style.gridRow=`${(sel.min-START)/STEP+2}/${(e2-START)/STEP+2}`;cs.hidden=false;}
+  else{const e2=Math.min(END,sel.min+30);if(cs){cs.style.gridColumn=col(sel.day);cs.style.gridRow=`${(sel.min-START)/STEP+2}/${(e2-START)/STEP+2}`;cs.hidden=false;}
     info=`${lab} ${toT(sel.min)}–${toT(e2)}`;$('sl-rate').hidden=true;}
   $('sl-msg').textContent=info;
   $('sl-edit').hidden=!isB;$('sl-copy').hidden=!isB;$('sl-cut').hidden=!isB;$('sl-del').hidden=!isB;$('sl-new').hidden=isB;
@@ -541,9 +598,25 @@ document.addEventListener('keydown',e=>{
 
 const slotAtX=x=>[...document.querySelectorAll('.slot')].find(s=>{const r=s.getBoundingClientRect();return x>=r.left&&x<r.right;});
 const minAtY=(slot,y)=>{const r=slot.getBoundingClientRect();const q=Math.floor((y-r.top)/(r.height/ROWS));return Math.min(END-STEP,START+Math.max(0,q)*STEP);};
-let drag=null;
+let drag=null,lastPT='mouse',lastDragAt=0;
+$('tt').addEventListener('click',e=>{
+  if(lastPT==='mouse'||Date.now()-lastDragAt<400)return;
+  const el=e.target.closest('.blk');
+  if(el){const day=+el.dataset.day,idx=+el.dataset.idx;if(!(sel&&sel.type==='blk'&&sel.day===day&&sel.idx===idx))select({type:'blk',day,idx});return;}
+  const slot=e.target.closest('.slot');if(slot)select({type:'cell',day:+slot.dataset.day,min:Math.floor((minAtY(slot,e.clientY)-START)/30)*30+START});
+});
+// phones: swipe the timetable left/right to change day (and week at the ends)
+let sw=null;
+$('scroller').addEventListener('touchstart',e=>{if(!isMob()||e.touches.length!==1)return;sw={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});
+$('scroller').addEventListener('touchend',e=>{if(!sw)return;const t0=sw;sw=null;if(drag||Date.now()-lastDragAt<400)return;
+  const t1=e.changedTouches[0],dx=t1.clientX-t0.x,dy=t1.clientY-t0.y;if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5)return;
+  let nd=flowDay+(dx<0?1:-1);sel=null;
+  if(nd>6){cur=wkShift(cur,1);nd=0;}else if(nd<0){cur=wkShift(cur,-1);nd=6;}
+  flowDay=nd;render();},{passive:true});
+if(mq){const re=()=>{sel=null;render();};mq.addEventListener?mq.addEventListener('change',re):mq.addListener(re);}
 $('tt').addEventListener('pointerdown',e=>{
-  if(e.button!==0)return;const el=e.target.closest('.blk');
+  if(e.button!==0)return;const el=e.target.closest('.blk');lastPT=e.pointerType;
+  if(e.pointerType!=='mouse'){const was=el&&sel&&sel.type==='blk'&&sel.day===+el.dataset.day&&sel.idx===+el.dataset.idx;if(!was)return;}
   if(!el){const slot=e.target.closest('.slot');if(slot)select({type:'cell',day:+slot.dataset.day,min:Math.floor((minAtY(slot,e.clientY)-START)/30)*30+START});return;}
   const day=+el.dataset.day,idx=+el.dataset.idx;
   const was=sel&&sel.type==='blk'&&sel.day===day&&sel.idx===idx;
@@ -561,13 +634,13 @@ document.addEventListener('pointermove',e=>{
   if(drag.mode==='move'){drag.ns=Math.max(START,Math.min(END-len,drag.s+dq));drag.ne=drag.ns+len;const sl=slotAtX(e.clientX);if(sl)drag.nd=+sl.dataset.day;}
   else if(drag.mode==='top')drag.ns=Math.max(START,Math.min(drag.e-STEP,drag.s+dq));
   else drag.ne=Math.min(END,Math.max(drag.s+STEP,drag.e+dq));
-  const el=drag.el;el.style.gridColumn=drag.nd+2;el.style.gridRow=`${(drag.ns-START)/STEP+2}/${(drag.ne-START)/STEP+2}`;
+  const el=drag.el;el.style.gridColumn=col(drag.nd);el.style.gridRow=`${(drag.ns-START)/STEP+2}/${(drag.ne-START)/STEP+2}`;
   const em=el.querySelector('em');if(em)em.textContent=`${toT(drag.ns)}–${toT(drag.ne)}`;
   $('sl-msg').textContent=`${md(dayDate(drag.nd))}（${T(drag.nd).d}） ${toT(drag.ns)}–${toT(drag.ne)}`;
 },{passive:false});
 function endDrag(e){
   if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;
-  if(!d.moved)return;
+  if(!d.moved)return;lastDragAt=Date.now();
   if(e.type==='pointercancel'||(d.ns===d.s&&d.ne===d.e&&d.nd===d.day)){render();return;}
   pushUndo();const b=D()[d.day].b.splice(d.idx,1)[0];
   const ni=place(D()[d.nd],{...b,s:toT(d.ns),e:toT(d.ne)});sel={type:'blk',day:d.nd,idx:ni};changed();
@@ -611,4 +684,5 @@ $('sb-save').onclick=async()=>{
 render();
 })();
 </script>
+
 </body></html>
