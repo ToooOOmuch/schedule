@@ -190,10 +190,6 @@ kbd{font-family:var(--f-num);font-size:11px;border:1px solid var(--line-strong);
 .axis .track{background:none;height:18px}
 .axis .track span{position:absolute;transform:translateX(-50%);font-family:var(--f-num);font-size:11px;color:var(--muted);white-space:nowrap}
 .gcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;margin-top:16px}
-.restore{background:color-mix(in srgb,var(--accent) 10%,var(--surface));border:1px solid var(--accent);border-radius:10px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
-.restore p{margin:0;flex:1 1 280px;font-size:14px;min-width:0}
-.restore p strong{display:block;font-size:15px}
-.restore .acts{display:flex;gap:8px;flex-wrap:wrap}
 .gcard{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .gcard h3{margin:0;font-size:16px}
 .gdate{display:flex;flex-direction:column;gap:2px}
@@ -303,8 +299,6 @@ const tracked=c=>(plan.track||[]).includes(c);
 const app=document.getElementById('app');
 app.innerHTML=`<div class="wrap">
   <header><h1 id="h-title"></h1><p class="lead" id="h-lead"></p><div class="legend" id="legend"></div></header>
-  <div class="restore" id="restore" hidden><p><strong>以前の画面で編集した予定が見つかりました</strong><span id="restore-desc"></span></p>
-    <div class="acts"><button class="btn primary" id="rs-ok" type="button">10/26の週をこの内容に戻す</button><button class="btn" id="rs-no" type="button">破棄する</button></div></div>
   <section><h2>週間タイムテーブル</h2>
     <div class="weekbar"><div class="wnav"><button class="btn" id="wk-prev" type="button" aria-label="前の週">◀</button><strong id="wk-label"></strong><button class="btn" id="wk-next" type="button" aria-label="次の週">▶</button></div><div class="wjump" id="wjump"></div></div>
     <div class="empty-week" id="wk-empty" hidden><p><strong id="wk-empty-title"></strong>この週の予定はまだありません。作り方を選んでください。</p>
@@ -498,16 +492,8 @@ $('mk-prev').onclick=()=>{const k=weekKeys().filter(x=>x<cur).pop();if(!k)return
 $('wk-astpl').onclick=()=>{pushUndo();plan.template=plan.template.map((t,i)=>({...t,b:D()[i].b.map(strip)}));changed();setMsg('この週を基本の予定に登録しました。保存すると反映されます');};
 $('wk-del').onclick=()=>{pushUndo();delete plan.weeks[cur];sel=null;changed();setMsg('この週を削除しました。元に戻すで取り消せます');};
 
-// recover edits left in this browser by the older single-week version of this page
-const OLD_KEY='weekly-plan-draft-v1',OLD_WEEK='2026-10-26';
-let oldDays=null;
-try{const raw=localStorage.getItem(OLD_KEY);if(raw){const o=JSON.parse(raw);const ds=o&&o.plan&&o.plan.days;
-  if(Array.isArray(ds)&&ds.length===7&&ds.every(x=>Array.isArray(x.b)))oldDays=ds.map(x=>({b:x.b.map(b=>({...strip(b),t:String(b.t).replace(/じゃんたま/g,'雀魂')}))}));}}catch(e){}
-const dropOld=()=>{oldDays=null;try{localStorage.removeItem(OLD_KEY);}catch(e){}$('restore').hidden=true;};
-if(oldDays){const n=oldDays.reduce((a,d)=>a+d.b.length,0);$('restore-desc').textContent=`保存される前の編集内容（予定${n}件）です。戻すと10/26の週と基本の予定がこの内容になります。確認してから「保存する」を押してください。`;$('restore').hidden=false;}
-$('rs-ok').onclick=()=>{if(!oldDays)return;pushUndo();plan.weeks[OLD_WEEK]=oldDays.map(d=>({b:d.b.map(b=>({...b}))}));
-  plan.template=plan.template.map((t,i)=>({...t,b:oldDays[i].b.map(b=>({...b}))}));$('restore').hidden=true;cur=OLD_WEEK;sel=null;flowDay=null;changed();setMsg('以前の編集内容に戻しました。「保存する」で確定します');};
-$('rs-no').onclick=dropOld;
+// the old single-week version left drafts under this key; they are no longer offered
+try{localStorage.removeItem('weekly-plan-draft-v1');}catch(e){}
 
 // ---- Outlook-style selection, drag, resize, clipboard ----
 function applySel(){
@@ -621,7 +607,7 @@ $('sb-save').onclick=async()=>{
   if(readOnly)return;const btn=$('sb-save');btn.disabled=true;setMsg('保存しています…');
   const art=await getArtifact();
   if(!art){btn.disabled=false;setMsg('この画面では保存できません。変更はこのブラウザに残っています。');return;}
-  try{clearDraft();if($('restore').hidden)try{localStorage.removeItem(OLD_KEY);}catch(e){}await art.publish(buildDoc());setMsg('保存しました。最新の内容を読み込みます…');}
+  try{clearDraft();await art.publish(buildDoc());setMsg('保存しました。最新の内容を読み込みます…');}
   catch(ex){saveDraft();const c=ex&&ex.code;
     if(c==='conflict')setMsg('別の場所で更新されたため、最新の内容を読み込みます。');
     else if(['not_writer','not_granted','not_declared','consent_required','capability_disabled','capability_removed'].includes(c))setReadOnly('このページは閲覧専用のため保存できません。');
