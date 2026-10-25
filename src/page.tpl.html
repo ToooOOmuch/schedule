@@ -7,7 +7,7 @@
 /* Layout: 週ごとの時間割グリッドが主役。下に週の達成度、1日の流れ（達成チェック）、目標の達成予定日。手帳のような落ち着いた紙面 */
 :root{
   --bg:#f6f7f9; --surface:#ffffff; --fg:#1d2430; --muted:#5d6878; --line:#dde2ea; --line-strong:#c4cbd6;
-  --accent:#2f6fdb; --accent-fg:#ffffff; --danger:#c23b3b; --scrim:rgba(20,26,36,.45);
+  --accent:#2f6fdb; --accent-fg:#ffffff; --danger:#c23b3b; --ok:#1f8a5b; --scrim:rgba(20,26,36,.45);
   --c-study:#2f6fdb; --c-study-bg:#dbe7fb;
   --c-gym:#1f8a5b; --c-gym-bg:#d6f0e3;
   --c-jt:#c4512f; --c-jt-bg:#fae0d6;
@@ -22,7 +22,7 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#12161d; --surface:#1a2029; --fg:#e7ebf1; --muted:#9aa5b5; --line:#2a323e; --line-strong:#3a4452;
-  --accent:#8db4ff; --accent-fg:#0f1520; --danger:#ff8a8a; --scrim:rgba(0,0,0,.6);
+  --accent:#8db4ff; --accent-fg:#0f1520; --danger:#ff8a8a; --ok:#6fd3a4; --scrim:rgba(0,0,0,.6);
   --c-study:#8db4ff; --c-study-bg:#1f3358;
   --c-gym:#6fd3a4; --c-gym-bg:#173d2d;
   --c-jt:#ff9b7a; --c-jt-bg:#4a2419;
@@ -35,7 +35,7 @@
 }}
 :root[data-theme="dark"]{
   --bg:#12161d; --surface:#1a2029; --fg:#e7ebf1; --muted:#9aa5b5; --line:#2a323e; --line-strong:#3a4452;
-  --accent:#8db4ff; --accent-fg:#0f1520; --danger:#ff8a8a; --scrim:rgba(0,0,0,.6);
+  --accent:#8db4ff; --accent-fg:#0f1520; --danger:#ff8a8a; --ok:#6fd3a4; --scrim:rgba(0,0,0,.6);
   --c-study:#8db4ff; --c-study-bg:#1f3358;
   --c-gym:#6fd3a4; --c-gym-bg:#173d2d;
   --c-jt:#ff9b7a; --c-jt-bg:#4a2419;
@@ -223,6 +223,30 @@ kbd{font-family:var(--f-num);font-size:11px;border:1px solid var(--line-strong);
 .warn{color:var(--danger)}
 
 
+.cums{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.cum{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cum h3{margin:0;font-size:16px}
+.cst{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font-size:13px;color:var(--muted)}
+.cst strong{font-size:22px;font-weight:900;line-height:1.2}
+.cst .lag{color:var(--danger)}.cst .okk{color:var(--ok)}.cst .cz{color:var(--muted);font-size:17px}
+.cnum{margin:0;font-size:13px;color:var(--muted)}
+.cnum b{color:var(--fg);font-size:14px}
+.cum svg{width:100%;height:auto;display:block;margin-top:4px;overflow:visible}
+.cum .cg{stroke:var(--line);stroke-width:1}
+.cum .ca{stroke:var(--line-strong);stroke-width:1}
+.cum .ct{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:3 3}
+.cum .ctl{fill:var(--accent);font-size:9px;text-anchor:middle;font-family:var(--f-body)}
+.cum .cx{fill:var(--muted);font-size:9px;text-anchor:middle;font-family:var(--f-num)}
+.cum .cy{fill:var(--muted);font-size:9px;text-anchor:end;font-family:var(--f-num)}
+.cum .cpl{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3}
+.cum .cac{fill:none;stroke:var(--c);stroke-width:2.5;stroke-linejoin:round}
+.cum .cgap{fill:var(--danger);opacity:.14;stroke:none}
+.ckey{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted)}
+.ckey i{display:inline-block;width:14px;height:0;vertical-align:middle;margin-right:4px}
+.ckey .kp{border-top:2px dashed var(--muted)}
+.ckey .ka{border-top:3px solid var(--c)}
+.ckey .kg{height:10px;background:var(--danger);opacity:.25;border-radius:2px}
+
 /* dock */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line-strong);box-shadow:0 -6px 20px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom,0px)}
 .dock:not(:has(> :not([hidden]))){display:none}
@@ -386,6 +410,9 @@ app.innerHTML=`<div class="wrap">
     <p class="howto"><span>上の「1日の流れ」で、予定ごとに5段階でチェックします（5個で100%、3個で60%）。</span></p>
     <div class="panel achv" id="achv"></div></section>
   <section id="sec-tot"><h2>1週間の予定時間</h2><div class="panel totals" id="totals"></div></section>
+  <section><h2>累積時間と遅れ</h2>
+    <p class="howto"><span>開始日から今日までに予定していた時間と、チェックした実績の時間の合計です。チェックしていない予定は「できなかった」として数えます。</span></p>
+    <div class="cums" id="cums"></div></section>
   <section><h2>目標と達成予定日</h2>
     <p class="howto"><span>表示中の週の予定時間を毎週続けた場合の目安です。チェックした実績は「これまでの実績」として差し引かれます。<b>必要な量の数字</b>も書き換えられます。</span></p>
     <div class="panel gchart" id="gchart"></div><div class="gcards" id="gcards"></div></section>
@@ -422,7 +449,7 @@ function render(){
   $('wk-empty').hidden=!!W;$('wk-body').hidden=!W;
   ['sec-achv','sec-flow','sec-tot'].forEach(id=>$(id).hidden=!W);
   if(W){renderGrid(W);renderAchv(W);renderTotals(W);renderFlow(W);}
-  renderGoals();
+  renderCum();renderGoals();
   $('savebar').hidden=!dirty;$('sb-undo').disabled=!undoStack.length;
   applySel();
 }
@@ -481,6 +508,49 @@ function renderFlow(W){
   $('tabs').innerHTML=W.map((d,i)=>`<button type="button" data-flow="${i}" aria-pressed="${i===flowDay}">${esc(T(i).d)}<small>${md(dayDate(i))}</small></button>`).join('');
   const fd=W[flowDay];
   $('flow').innerHTML=`<h3>${fullDate(dayDate(flowDay))}</h3>`+(fd.b.length?`<ol>${fd.b.map((b,j)=>`<li class="${b.c}"><span class="t">${b.s}–${b.e}</span><span class="d">${esc(b.t)}</span>${tracked(b.c)?`<span class="rate">${rateHTML(flowDay,j,b.r,'fr')}</span>`:'<span></span>'}${b.c==='jt'?streamHTML(flowDay,j,b):''}${b.m?`<span class="memo">${esc(b.m)}</span>`:''}</li>`).join('')}</ol>`:`<p class="empty">この日はまだ予定がありません。表の空いている所をダブルクリックすると追加できます。</p>`);
+}
+
+// cumulative planned vs done, per goal, from the start date
+function cumSeries(g){
+  const keys=weekKeys();if(!keys.length)return null;
+  const startD=parseYmd(plan.start&&plan.start<keys[0]?plan.start:keys[0]),endD=addDays(parseYmd(keys[keys.length-1]),7);
+  const nowMin=now.getHours()*60+now.getMinutes();
+  // pts[k] = totals at the start of day k
+  const pts=[];let P=0,A=0,U=0,pastP=0,pastA=0,k=0,nowK=null;
+  for(let d=new Date(startD);d<=endD;d=addDays(d,1),k++){
+    pts.push({d:new Date(d),P,A});
+    if(ymd(d)===ymd(today))nowK=k+Math.min(1,Math.max(0,(nowMin-START)/(END-START)));
+    const W=plan.weeks[ymd(mondayOf(d))],day=W?W[(d.getDay()+6)%7]:null;
+    const isPast=d<today,isToday=ymd(d)===ymd(today);
+    if(day)day.b.forEach(b=>{if(b.c!==g.cat||(g.kw&&!b.t.includes(g.kw)))return;const m=dur(b);P+=m;
+      if(isPast||(isToday&&toMin(b.e)<=nowMin)){pastP+=m;if(b.r){A+=m*b.r/5;pastA+=m*b.r/5;}else U+=m;}});
+  }
+  if(nowK==null&&today>endD)nowK=pts.length-1;
+  return {pts,P,pastP,pastA,U,nowK};
+}
+function renderCum(){
+  const goals=plan.goals||[];
+  $('cums').innerHTML=goals.map(g=>{const s=cumSeries(g);if(!s)return '';
+    const lag=s.pastP-s.pastA,pace=weeklyPace(g)*60/7,lagDays=pace?lag/pace:0;
+    const st=s.pastP===0?`<strong class="cz">まだ開始前です</strong>`:lag>=15?`<strong class="lag">${fmtH(lag)} 遅れ</strong><span>（予定の約${Math.max(1,Math.round(lagDays))}日分）</span>`:`<strong class="okk">予定どおり</strong>`;
+    const Wd=320,Hd=150,L=34,R=8,Tp=10,B=22,n=s.pts.length,maxY=Math.max(1,s.P)/60;
+    const x=i=>L+(n<=1?0:i/(n-1))*(Wd-L-R),y=h=>Tp+(1-h/maxY)*(Hd-Tp-B),f=v=>v.toFixed(1);
+    const pl=s.pts.map((p,i)=>`${i?'L':'M'}${f(x(i))},${f(y(p.P/60))}`).join('');
+    let al='',gap='',mark='';
+    if(s.nowK!=null){const kk=Math.floor(s.nowK);
+      const act=s.pts.slice(0,kk+1).map((p,i)=>[x(i),y(p.A/60)]);act.push([x(s.nowK),y(s.pastA/60)]);
+      const pln=s.pts.slice(0,kk+1).map((p,i)=>[x(i),y(p.P/60)]);pln.push([x(s.nowK),y(s.pastP/60)]);
+      al='M'+act.map(q=>f(q[0])+','+f(q[1])).join('L');
+      gap=al+'L'+pln.reverse().map(q=>f(q[0])+','+f(q[1])).join('L')+'Z';
+      mark=`<line x1="${f(x(s.nowK))}" y1="${Tp}" x2="${f(x(s.nowK))}" y2="${Hd-B}" class="ct"/><text x="${f(x(s.nowK))}" y="${Tp-1}" class="ctl">今日</text>`;}
+    let ticks='';s.pts.forEach((p,i)=>{if(p.d.getDay()===1)ticks+=`<line x1="${f(x(i))}" y1="${Tp}" x2="${f(x(i))}" y2="${Hd-B}" class="cg"/><text x="${f(x(i))}" y="${Hd-6}" class="cx">${md(p.d)}</text>`;});
+    const svg=`<svg viewBox="0 0 ${Wd} ${Hd}" role="img" aria-label="${esc(g.n)}の累積時間">${ticks}
+      <line x1="${L}" y1="${Hd-B}" x2="${Wd-R}" y2="${Hd-B}" class="ca"/>
+      <text x="${L-4}" y="${f(y(maxY)+4)}" class="cy">${Math.round(maxY)}h</text><text x="${L-4}" y="${Hd-B+4}" class="cy">0</text>
+      ${gap?`<path d="${gap}" class="cgap"/>`:''}<path d="${pl}" class="cpl"/>${al?`<path d="${al}" class="cac"/>`:''}${mark}</svg>`;
+    return `<div class="cum ${g.cat}"><h3>${esc(g.n)}</h3><div class="cst">${st}</div>
+      <p class="cnum">今日までの予定 <b class="num">${fmtH(s.pastP)}</b> ／ 実績 <b class="num">${fmtH(s.pastA)}</b>${s.U?`<span>（うち未チェック ${fmtH(s.U)}）</span>`:''}</p>
+      ${svg}<p class="ckey"><span><i class="kp"></i>予定の累積</span><span><i class="ka"></i>実績の累積</span><span><i class="kg"></i>遅れ</span></p></div>`;}).join('');
 }
 
 // goals
