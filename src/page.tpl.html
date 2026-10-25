@@ -180,6 +180,15 @@ kbd{font-family:var(--f-num);font-size:11px;border:1px solid var(--line-strong);
 .flow li{display:grid;grid-template-columns:96px 1fr auto;gap:10px;font-size:14px;align-items:center;min-height:28px}
 .flow li .t{font-family:var(--f-num);font-size:12px;color:var(--muted)}
 .flow li .d{border-left:3px solid var(--c);padding-left:8px;min-width:0;overflow-wrap:anywhere}
+.flow li .strm{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-size:13px;padding-left:11px}
+.strm label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.strm input[type=checkbox]{width:18px;height:18px;margin:0;accent-color:var(--c)}
+.strm input[type=number]{width:4.5em;border:1px solid var(--line-strong);background:var(--bg);border-radius:6px;padding:2px 6px;font-family:var(--f-num);font-size:14px;color:var(--fg)}
+.arow.strow .lab{font-weight:500;padding-left:14px;font-size:13px}
+.arow.strow .abar{height:10px}
+.arow.strow .abar .a{opacity:.6}
+.atable tr.strow td{color:var(--c);font-size:12px}
+.atable tr.strow td:first-child{padding-left:14px}
 .flow .empty{color:var(--muted);font-size:14px;margin:0}
 
 /* goals */
@@ -288,6 +297,8 @@ kbd{font-family:var(--f-num);font-size:11px;border:1px solid var(--line-strong);
   .sheet{align-items:flex-end;padding:0}
   .card{width:100%;border-radius:16px 16px 0 0;max-height:92%;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
   .card input,.card select,.card textarea{font-size:16px}
+  .strm input[type=number]{font-size:16px;width:4.2em}
+  .strm input[type=checkbox]{width:22px;height:22px}
   .actions .btn{flex:1;padding:10px 8px}
   .actions .sp{display:none}
   .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
@@ -346,6 +357,7 @@ try{const raw=localStorage.getItem(DRAFT_KEY);if(raw){const d=JSON.parse(raw);if
 const saveDraft=()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify({base:servedJSON,plan}));}catch(e){}};
 const clearDraft=()=>{try{localStorage.removeItem(DRAFT_KEY);}catch(e){}};
 
+if(plan.cats.jt==='雀魂・YouTube')plan.cats={...plan.cats,jt:'雀魂'};
 // older data kept naps under the sleep type
 if(!plan.cats.nap){plan.cats={...plan.cats,sleep:'睡眠',nap:'昼寝'};
   [plan.template,...Object.values(plan.weeks)].forEach(W=>W.forEach(d=>d.b.forEach(b=>{if(b.c==='sleep'&&b.t.includes('昼寝'))b.c='nap';})));}
@@ -390,6 +402,7 @@ app.innerHTML=`<div class="wrap">
   <label for="f-text">内容<input id="f-text" maxlength="40" autocomplete="off"></label>
   <div class="two"><label for="f-cat">種類<select id="f-cat"></select></label><label for="f-r">達成度<select id="f-r"><option value="">未記録</option><option value="1">1（20%）</option><option value="2">2（40%）</option><option value="3">3（60%）</option><option value="4">4（80%）</option><option value="5">5（100%）</option></select></label></div>
   <div class="two"><label for="f-s">開始<select id="f-s"></select></label><label for="f-e">終了<select id="f-e"></select></label></div>
+  <div class="two" id="f-st-row"><label for="f-st-on">配信<select id="f-st-on"><option value="">しない</option><option value="1">した</option></select></label><label for="f-st">配信した時間（時間）<input id="f-st" type="number" min="0" max="24" step="0.25" inputmode="decimal"></label></div>
   <label for="f-memo">メモ<textarea id="f-memo" rows="3" maxlength="500" placeholder="やったこと・気づいたことなど"></textarea></label>
   <fieldset><legend>この予定を入れる曜日（この週）</legend><div class="days" id="f-days"></div></fieldset>
   <p class="err" id="f-err" hidden></p>
@@ -398,6 +411,7 @@ app.innerHTML=`<div class="wrap">
 </div></div>`;
 const $=id=>document.getElementById(id);
 
+const streamHTML=(day,j,b)=>`<span class="strm"><label><input type="checkbox" class="sc" id="fs-${day}-${j}" data-day="${day}" data-idx="${j}" ${b.st!=null?'checked':''}>配信した</label>${b.st!=null?`<label>配信した時間 <input type="number" class="sh" id="fh-${day}-${j}" data-day="${day}" data-idx="${j}" min="0" max="24" step="0.25" inputmode="decimal" value="${b.st}"> 時間</label>`:''}</span>`;
 const rateHTML=(day,idx,r,pre)=>{let h='';for(let n=1;n<=5;n++)h+=`<input type="checkbox" class="rc" id="${pre}-${day}-${idx}-${n}" data-day="${day}" data-idx="${idx}" data-n="${n}" ${n<=(r||0)?'checked':''} aria-label="達成度 ${n}/5">`;return h;};
 
 function render(){
@@ -440,14 +454,19 @@ function weekStats(W){const st={};(plan.track||[]).forEach(c=>{st[c]={plan:0,rec
     s.plan+=m;s.days[i].plan+=m;if(b.r){s.rec+=m;s.ach+=m*b.r/5;s.days[i].rec+=m;s.days[i].ach+=m*b.r/5;}}));return st;}
 function renderAchv(W){
   const st=weekStats(W);let h='';
+  const strm={min:0,n:0,days:W.map(()=>0)};W.forEach((d,i)=>d.b.forEach(b=>{if(b.c==='jt'&&b.st!=null){strm.min+=b.st*60;strm.n++;strm.days[i]+=b.st*60;}}));
   for(const c in st){const s=st[c];if(!s.plan)continue;const p=x=>(x/s.plan*100).toFixed(1);
     h+=`<div class="arow ${c}"><span class="lab">${esc(plan.cats[c])}</span><div class="abar"><div class="a" style="width:${p(s.ach)}%"></div><div class="m" style="width:${p(s.rec-s.ach)}%"></div></div>
-      <span class="astat"><strong class="num">${Math.round(s.ach/s.plan*100)}%</strong>　できた ${fmtH(s.ach)} ／ 予定 ${fmtH(s.plan)}${s.plan>s.rec?`　・未記録 ${fmtH(s.plan-s.rec)}`:''}</span></div>`;}
+      <span class="astat"><strong class="num">${Math.round(s.ach/s.plan*100)}%</strong>　できた ${fmtH(s.ach)} ／ 予定 ${fmtH(s.plan)}${s.plan>s.rec?`　・未記録 ${fmtH(s.plan-s.rec)}`:''}</span></div>`;
+    if(c==='jt'){const sm=strm.min,pc=Math.round(sm/s.plan*100);
+      h+=`<div class="arow jt strow"><span class="lab">配信</span><div class="abar"><div class="a" style="width:${Math.min(100,sm/s.plan*100).toFixed(1)}%"></div></div>
+      <span class="astat"><strong class="num">${fmtH(sm)}</strong>　配信した回数 ${strm.n}回・雀魂の予定時間の${pc}%</span></div>`;}}
   h+=`<div class="akey"><span><i class="k1"></i>できた時間</span><span><i class="k2"></i>チェックしたができなかった時間</span><span><i></i>まだチェックしていない時間</span></div>`;
   h+=`<div class="atable"><table><thead><tr><th></th>${W.map((_,i)=>`<th>${esc(T(i).d)}<br>${md(dayDate(i))}</th>`).join('')}</tr></thead><tbody>`;
   for(const c in st){const s=st[c];if(!s.plan)continue;
     h+=`<tr class="${c}"><td>${esc(plan.cats[c])}</td>${s.days.map(d=>{if(!d.plan)return '<td>–</td>';if(!d.rec)return '<td><span class="p un">未</span></td>';
-      const pc=Math.round(d.ach/d.plan*100);return `<td><span class="p${pc>=60?' hi':''}" style="--pct:${Math.max(8,pc)}%">${pc}%</span></td>`;}).join('')}</tr>`;}
+      const pc=Math.round(d.ach/d.plan*100);return `<td><span class="p${pc>=60?' hi':''}" style="--pct:${Math.max(8,pc)}%">${pc}%</span></td>`;}).join('')}</tr>`;
+    if(c==='jt')h+=`<tr class="jt strow"><td>配信</td>${strm.days.map((m,i)=>`<td class="num">${m?fmtH(m):(s.days[i].plan?'0h':'–')}</td>`).join('')}</tr>`;}
   h+='</tbody></table></div>';$('achv').innerHTML=h;
 }
 function renderTotals(W){
@@ -461,7 +480,7 @@ function renderFlow(W){
   if(flowDay==null)flowDay=cur===thisMon?(today.getDay()+6)%7:0;
   $('tabs').innerHTML=W.map((d,i)=>`<button type="button" data-flow="${i}" aria-pressed="${i===flowDay}">${esc(T(i).d)}<small>${md(dayDate(i))}</small></button>`).join('');
   const fd=W[flowDay];
-  $('flow').innerHTML=`<h3>${fullDate(dayDate(flowDay))}</h3>`+(fd.b.length?`<ol>${fd.b.map((b,j)=>`<li class="${b.c}"><span class="t">${b.s}–${b.e}</span><span class="d">${esc(b.t)}</span>${tracked(b.c)?`<span class="rate">${rateHTML(flowDay,j,b.r,'fr')}</span>`:'<span></span>'}${b.m?`<span class="memo">${esc(b.m)}</span>`:''}</li>`).join('')}</ol>`:`<p class="empty">この日はまだ予定がありません。表の空いている所をダブルクリックすると追加できます。</p>`);
+  $('flow').innerHTML=`<h3>${fullDate(dayDate(flowDay))}</h3>`+(fd.b.length?`<ol>${fd.b.map((b,j)=>`<li class="${b.c}"><span class="t">${b.s}–${b.e}</span><span class="d">${esc(b.t)}</span>${tracked(b.c)?`<span class="rate">${rateHTML(flowDay,j,b.r,'fr')}</span>`:'<span></span>'}${b.c==='jt'?streamHTML(flowDay,j,b):''}${b.m?`<span class="memo">${esc(b.m)}</span>`:''}</li>`).join('')}</ol>`:`<p class="empty">この日はまだ予定がありません。表の空いている所をダブルクリックすると追加できます。</p>`);
 }
 
 // goals
@@ -526,6 +545,7 @@ function openSheet(dayI,idx,startMin){
   const b=isNew?{s:toT(startMin),e:toT(Math.min(END,startMin+60)),c:'free',t:''}:D()[dayI].b[idx];
   $('f-title').textContent=`${md(dayDate(dayI))}（${T(dayI).d}）の予定を${isNew?'追加':'編集'}`;
   $('f-text').value=b.t;$('f-cat').value=b.c;$('f-s').value=b.s;$('f-e').value=b.e;$('f-r').value=b.r||'';$('f-memo').value=b.m||'';
+  $('f-st-on').value=b.st!=null?'1':'';$('f-st').value=b.st!=null?b.st:'';syncStreamFields();
   $('f-days').innerHTML=D().map((_,i)=>`<label><input type="checkbox" id="f-day-${i}" value="${i}" ${i===dayI?'checked':''}>${esc(T(i).d)} ${md(dayDate(i))}</label>`).join('');
   $('f-del').hidden=isNew;$('f-err').hidden=true;$('sheet').hidden=false;if(!isMob())$('f-text').focus();
 }
@@ -533,17 +553,22 @@ function closeSheet(){$('sheet').hidden=true;editing=null;if(lastFocus&&document
 function err(t){$('f-err').textContent=t;$('f-err').hidden=false;}
 function changed(){dirty=JSON.stringify(plan)!==servedJSON;if(dirty)saveDraft();else clearDraft();setMsg(dirty?'未保存の変更があります':'');render();}
 $('f-ok').onclick=()=>{
+  const stOn=$('f-cat').value==='jt'&&$('f-st-on').value==='1',stV=parseFloat($('f-st').value);
+  if(stOn&&!(stV>=0&&stV<=24))return err('配信した時間を0〜24の数字で入力してください。');
   const memo=$('f-memo').value.trim(),t=$('f-text').value.trim(),s=$('f-s').value,e=$('f-e').value,c=$('f-cat').value,r=+$('f-r').value||null;
   if(!t)return err('内容を入力してください。');
   if(toMin(e)<=toMin(s))return err('終了は開始より後の時刻にしてください。');
   const days=D().map((_,i)=>i).filter(i=>$('f-day-'+i).checked);
   if(!days.length)return err('曜日を1つ以上選んでください。');
   pushUndo();const {dayI,idx}=editing;if(idx!=null)D()[dayI].b.splice(idx,1);
-  sel=null;days.forEach(i=>{const nb={s,e,c,t};if(i===dayI&&r)nb.r=r;if(memo)nb.m=memo;const ni=place(D()[i],nb);if(i===dayI)sel={type:'blk',day:i,idx:ni};});
+  sel=null;days.forEach(i=>{const nb={s,e,c,t};if(i===dayI&&r)nb.r=r;if(memo)nb.m=memo;if(i===dayI&&stOn)nb.st=Math.round(stV*100)/100;const ni=place(D()[i],nb);if(i===dayI)sel={type:'blk',day:i,idx:ni};});
   closeSheet();changed();
 };
 $('f-del').onclick=()=>{pushUndo();const {dayI,idx}=editing;D()[dayI].b.splice(idx,1);sel=null;closeSheet();changed();};
 $('f-cancel').onclick=closeSheet;
+function syncStreamFields(){const jt=$('f-cat').value==='jt';$('f-st-row').hidden=!jt;$('f-st').disabled=$('f-st-on').value!=='1';}
+$('f-cat').addEventListener('change',syncStreamFields);
+$('f-st-on').addEventListener('change',()=>{syncStreamFields();if($('f-st-on').value==='1'&&$('f-st').value===''){const s=toMin($('f-s').value),e2=toMin($('f-e').value);$('f-st').value=Math.max(0,Math.round((e2-s)/15)/4);}});
 $('sheet').addEventListener('click',e=>{if(e.target===$('sheet'))closeSheet();});
 
 // week menu
@@ -589,6 +614,14 @@ function doUndo(){if(!undoStack.length)return;plan=JSON.parse(undoStack.pop());s
 function doEdit(){if(!sel)return;if(sel.type==='blk')openSheet(sel.day,sel.idx);else openSheet(sel.day,null,sel.min);}
 $('sl-edit').onclick=doEdit;$('sl-new').onclick=doEdit;$('sl-copy').onclick=doCopy;$('sl-cut').onclick=doCut;
 $('sl-paste').onclick=doPaste;$('sl-del').onclick=doDelete;$('sl-close').onclick=()=>select(null);$('sb-undo').onclick=doUndo;
+
+// stream check on 雀魂 items: tick to record, then enter the hours streamed
+document.addEventListener('change',e=>{const el=e.target;if(!el.classList||!(el.classList.contains('sc')||el.classList.contains('sh')))return;
+  const W=D();const b=W&&W[+el.dataset.day]&&W[+el.dataset.day].b[+el.dataset.idx];if(!b)return;
+  if(el.classList.contains('sc')){pushUndo();if(el.checked)b.st=Math.round(dur(b)/15)/4;else delete b.st;
+    const hid=`fh-${el.dataset.day}-${el.dataset.idx}`;changed();const h=$(hid);if(h){h.focus();h.select();}return;}
+  const v=Math.round(parseFloat(el.value)*100)/100;if(!(v>=0&&v<=24)){el.value=b.st;return;}
+  pushUndo();b.st=v;const id=el.id;changed();const again=$(id);if(again)again.focus();});
 
 // 5-step check: clicking box n sets n; clicking the current top box steps down
 document.addEventListener('change',e=>{const el=e.target;if(!el.classList||!el.classList.contains('rc'))return;
