@@ -15,6 +15,7 @@
   --c-life:#8a6d1f; --c-life-bg:#f6ecd0;
   --c-free:#7a5bc7; --c-free-bg:#ebe4fa;
   --c-sleep:#3d4a66; --c-sleep-bg:#d9deea;
+  --c-nap:#6f7fc0; --c-nap-bg:#e8ebf8;
   --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
   --f-num:"JetBrains Mono",ui-monospace,Menlo,monospace;
   --q:12px;
@@ -29,6 +30,7 @@
   --c-life:#e3c56e; --c-life-bg:#3d3318;
   --c-free:#c0a8ff; --c-free-bg:#332a52;
   --c-sleep:#aab6d6; --c-sleep-bg:#262f45;
+  --c-nap:#c9d1f5; --c-nap-bg:#353f66;
   color-scheme:dark;
 }}
 :root[data-theme="dark"]{
@@ -41,6 +43,7 @@
   --c-life:#e3c56e; --c-life-bg:#3d3318;
   --c-free:#c0a8ff; --c-free-bg:#332a52;
   --c-sleep:#aab6d6; --c-sleep-bg:#262f45;
+  --c-nap:#c9d1f5; --c-nap-bg:#353f66;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -121,6 +124,7 @@ kbd{font-family:var(--f-num);font-size:11px;border:1px solid var(--line-strong);
 .life{--c:var(--c-life);--b:var(--c-life-bg)}
 .free{--c:var(--c-free);--b:var(--c-free-bg)}
 .sleep{--c:var(--c-sleep);--b:var(--c-sleep-bg)}
+.nap{--c:var(--c-nap);--b:var(--c-nap-bg)}
 .note{font-size:13px;color:var(--muted);margin-top:8px}
 
 /* 5-step check */
@@ -342,6 +346,9 @@ try{const raw=localStorage.getItem(DRAFT_KEY);if(raw){const d=JSON.parse(raw);if
 const saveDraft=()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify({base:servedJSON,plan}));}catch(e){}};
 const clearDraft=()=>{try{localStorage.removeItem(DRAFT_KEY);}catch(e){}};
 
+// older data kept naps under the sleep type
+if(!plan.cats.nap){plan.cats={...plan.cats,sleep:'睡眠',nap:'昼寝'};
+  [plan.template,...Object.values(plan.weeks)].forEach(W=>W.forEach(d=>d.b.forEach(b=>{if(b.c==='sleep'&&b.t.includes('昼寝'))b.c='nap';})));}
 const weekKeys=()=>Object.keys(plan.weeks).sort();
 let cur=plan.weeks[thisMon]?thisMon:(weekKeys().find(k=>k>=thisMon)||thisMon);
 const D=()=>plan.weeks[cur]||null;
@@ -444,11 +451,10 @@ function renderAchv(W){
   h+='</tbody></table></div>';$('achv').innerHTML=h;
 }
 function renderTotals(W){
-  const tot={};let nap=0;W.forEach(d=>d.b.forEach(b=>{tot[b.c]=(tot[b.c]||0)+dur(b);if(b.c==='sleep'&&b.t.includes('昼寝'))nap+=dur(b);}));
-  const awake=Object.entries(tot).reduce((a,[k,v])=>k==='sleep'?a:a+v,0);
-  tot.sleep=nap; // the sleep row shows naps only
-  const order=['study','gym','jt','free','work','life','sleep'].filter(k=>plan.cats[k]);const max=Math.max(1,...order.map(k=>tot[k]||0));
-  const label=k=>k==='sleep'?'昼寝':plan.cats[k];
+  const tot={};W.forEach(d=>d.b.forEach(b=>{tot[b.c]=(tot[b.c]||0)+dur(b);}));
+  const awake=Object.entries(tot).reduce((a,[k,v])=>k==='sleep'||k==='nap'?a:a+v,0);
+  const order=['study','gym','jt','free','work','life','nap'].filter(k=>plan.cats[k]);const max=Math.max(1,...order.map(k=>tot[k]||0));
+  const label=k=>plan.cats[k];
   $('totals').innerHTML=`<div class="awake"><span class="lab">この週の稼働時間</span><strong class="num">${fmtH(awake)}</strong><span class="sub">1日平均 ${fmtH(awake/7)}・睡眠と昼寝以外の予定の合計</span></div>`+order.map(k=>`<div class="row ${k}"><span class="lab">${esc(label(k))}</span><div class="bar"><div style="width:${((tot[k]||0)/max*100).toFixed(1)}%"></div></div><span class="v num">${fmtH(tot[k]||0)}</span></div>`).join('');
 }
 function renderFlow(W){
